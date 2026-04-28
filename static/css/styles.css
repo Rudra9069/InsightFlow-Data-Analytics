@@ -433,9 +433,10 @@ footer {
     }
 
     .charts-grid {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-        margin-top: 2rem;
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+        margin-top: 1.5rem !important;
     }
 
     .stats-grid {
