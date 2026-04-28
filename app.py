@@ -228,5 +228,36 @@ def filter_data():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/clean-data', methods=['POST'])
+def clean_data():
+    data = request.json
+    filename = data.get('filename')
+    instructions = data.get('instructions', {})
+    
+    if not filename:
+        return jsonify({'error': 'Filename is required'}), 400
+        
+    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    if not os.path.exists(filepath):
+        return jsonify({'error': 'File not found'}), 404
+        
+    try:
+        analyzer = DataAnalyzer(filepath)
+        analyzer.clean_data(instructions, filepath)
+        
+        # Reload to get updated stats
+        analyzer = DataAnalyzer(filepath)
+        insights = analyzer.get_summary()
+        chart_data = analyzer.get_chart_data()
+        
+        return jsonify({
+            'success': True,
+            'insights': insights,
+            'chart_data': chart_data
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 if __name__ == '__main__':
     app.run(debug=True)

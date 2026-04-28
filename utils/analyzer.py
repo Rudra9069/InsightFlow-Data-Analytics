@@ -55,7 +55,8 @@ class DataAnalyzer:
         # 3. Scatter plot for first two numeric columns
         if len(numeric_cols) >= 2:
             x, y = numeric_cols[0], numeric_cols[1]
-            sample_df = self.df[[x, y]].dropna().sample(min(100, len(self.df)))
+            valid_df = self.df[[x, y]].dropna()
+            sample_df = valid_df.sample(min(100, len(valid_df)))
             scatter_points = [{'x': float(row[x]), 'y': float(row[y])} for _, row in sample_df.iterrows()]
             chart_data.append({
                 'type': 'scatter',
@@ -77,3 +78,31 @@ class DataAnalyzer:
             })
             
         return chart_data
+
+    def clean_data(self, instructions, filepath):
+        """Applies data cleaning instructions to the dataframe and saves it."""
+        for col, method in instructions.items():
+            if col not in self.df.columns:
+                continue
+                
+            if method == 'mean' and pd.api.types.is_numeric_dtype(self.df[col]):
+                self.df[col] = self.df[col].fillna(self.df[col].mean())
+            elif method == 'median' and pd.api.types.is_numeric_dtype(self.df[col]):
+                self.df[col] = self.df[col].fillna(self.df[col].median())
+            elif method == 'mode':
+                mode_val = self.df[col].mode()
+                if not mode_val.empty:
+                    self.df[col] = self.df[col].fillna(mode_val[0])
+            elif method == 'drop_rows':
+                self.df = self.df.dropna(subset=[col])
+            elif method == 'drop_column':
+                self.df = self.df.drop(columns=[col])
+            elif method == 'unknown':
+                self.df[col] = self.df[col].fillna("Unknown")
+                
+        # Save changes back to the file
+        if filepath.endswith('.csv'):
+            self.df.to_csv(filepath, index=False)
+        elif filepath.endswith(('.xls', '.xlsx')):
+            self.df.to_excel(filepath, index=False)
+

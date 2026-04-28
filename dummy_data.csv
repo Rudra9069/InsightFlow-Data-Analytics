@@ -1,0 +1,51 @@
+ID,Name,Age,Department,Salary,JoiningDate,Rating,IsActive
+1,Alice Smith,30,Engineering,85000,2021-01-15,4.5,Yes
+2,Bob Johnson,,Sales,60000,2021-03-22,3.8,Yes
+3,Charlie Brown,28,Marketing,,2022-05-11,4.0,No
+4,Diana Ross,35,HR,75000,2020-11-01,,Yes
+5,Evan Wright,42,Engineering,95000,2019-08-14,4.8,Yes
+6,Fiona Gallagher,,Sales,,2023-01-10,3.5,Yes
+7,George Costanza,45,Marketing,68000,2018-04-23,2.5,No
+8,Hannah Abbott,29,Engineering,82000,2022-07-07,4.2,Yes
+9,Ian Malcolm,50,HR,80000,2017-09-30,,Yes
+10,Julia Roberts,31,Sales,62000,2021-12-05,4.1,Yes
+11,Kevin Bacon,38,Engineering,,2020-02-18,3.9,Yes
+12,Laura Dern,,Marketing,71000,2021-06-12,4.6,Yes
+13,Michael Scott,46,Sales,65000,2015-03-15,,Yes
+14,Nina Dobrev,27,HR,58000,2023-03-01,4.9,Yes
+15,Oscar Isaac,33,Engineering,88000,2021-09-21,4.3,No
+16,Pam Beesly,,Sales,55000,2016-04-10,4.0,Yes
+17,Quincy Jones,55,Marketing,90000,2014-11-20,4.7,Yes
+18,Rachel Green,32,HR,,2020-08-05,3.6,No
+19,Steve Rogers,100,Engineering,105000,1945-05-08,,No
+20,Tina Fey,48,Sales,72000,2019-01-25,4.5,Yes
+21,Ursula Buffay,32,Marketing,66000,2021-05-17,3.2,Yes
+22,Victor Stone,,Engineering,92000,2022-11-11,4.4,Yes
+23,Wanda Maximoff,30,HR,77000,2021-02-28,,Yes
+24,Xavier Woods,36,Sales,,2020-07-14,4.1,Yes
+25,Yolanda Hadid,51,Marketing,85000,2018-10-09,4.8,No
+26,Zack Snyder,49,Engineering,98000,2017-03-24,3.7,Yes
+27,Amy Adams,44,HR,81000,2019-12-01,,Yes
+28,Bruce Wayne,,Sales,120000,2015-08-16,4.9,Yes
+29,Clark Kent,34,Marketing,,2020-10-31,4.6,Yes
+30,Diana Prince,300,Engineering,110000,1918-11-11,5.0,Yes
+31,Eddie Brock,38,HR,69000,2022-04-05,3.4,No
+32,Frank Castle,41,Sales,61000,2021-08-20,,Yes
+33,Gwen Stacy,,Engineering,83000,2023-02-14,4.2,Yes
+34,Harry Potter,21,Marketing,64000,2022-09-01,3.8,Yes
+35,Iris West,29,HR,,2021-07-22,4.3,Yes
+36,John Wick,45,Sales,75000,2018-05-19,,No
+37,Kara Danvers,26,Engineering,87000,2022-12-10,4.7,Yes
+38,Luke Skywalker,,Marketing,95000,2017-11-04,4.8,Yes
+39,Mary Jane,28,HR,63000,2020-04-18,4.0,Yes
+40,Natasha Romanoff,35,Sales,,2016-06-25,4.9,No
+41,Oliver Queen,32,Engineering,94000,2019-03-12,,Yes
+42,Peter Parker,23,Marketing,55000,2023-05-05,4.1,Yes
+43,Quicksilver,,HR,59000,2022-01-30,3.6,Yes
+44,Reed Richards,43,Sales,71000,2018-08-08,4.5,Yes
+45,Susan Storm,40,Engineering,,2018-08-08,4.6,No
+46,Tony Stark,48,Marketing,150000,2015-05-01,,Yes
+47,Ulysses Klaue,52,HR,68000,2017-10-15,3.2,Yes
+48,Vision,,Sales,60000,2021-06-06,4.4,Yes
+49,Wade Wilson,37,Engineering,89000,2019-09-09,,Yes
+50,Xena,40,Marketing,73000,2020-12-25,4.2,No

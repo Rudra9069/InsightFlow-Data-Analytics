@@ -9,6 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const chartsContainer = document.getElementById('charts-container');
     const reuploadBtn = document.getElementById('reupload-btn');
 
+    // Modal elements
+    const cleanModal = document.getElementById('clean-modal');
+    const openCleanModalBtn = document.getElementById('open-clean-modal-btn');
+    const closeCleanModalBtn = document.getElementById('close-modal-btn');
+    const cancelCleanBtn = document.getElementById('cancel-clean-btn');
+    const applyCleanBtn = document.getElementById('apply-clean-btn');
+    const cleanModalTbody = document.getElementById('clean-modal-tbody');
+
     // Drag and drop logic
     dropZone.onclick = () => fileInput.click();
     
@@ -25,6 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let currentChartData = [];
     let activeCharts = [];
+    let currentInsights = null;
+    let currentFilename = null;
 
     reuploadBtn.onclick = () => {
         resultsSection.style.display = 'none';
@@ -70,6 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function renderResults(data) {
+        currentInsights = data.insights;
+        currentFilename = data.filename;
         resultsSection.style.display = 'block';
         document.getElementById('current-filename').textContent = data.filename;
         updateStats(data.insights);
@@ -130,6 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const filterResult = await res.json();
                 if (filterResult.success) {
                     currentChartData = filterResult.chart_data;
+                    currentInsights = filterResult.insights;
                     updateStats(filterResult.insights);
                     renderOverview(filterResult.insights);
                     chartsContainer.innerHTML = '';
@@ -222,6 +235,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('numeric-cols-count').textContent = numericCount;
         document.getElementById('categorical-cols-count').textContent = categoricalCount;
         document.getElementById('complete-rows').textContent = completeRowsPct.toFixed(1) + '%';
+
+        // Always show the button
+        document.getElementById('open-clean-modal-btn').style.display = 'block';
 
         // Populate table
         const tbody = document.getElementById('overview-table-body');
@@ -475,4 +491,110 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         activeCharts[index] = newChart;
     }
+
+    // Modal Logic
+    openCleanModalBtn.onclick = () => {
+        populateCleanModal();
+        cleanModal.classList.add('active');
+    };
+
+    const closeModal = () => cleanModal.classList.remove('active');
+    closeCleanModalBtn.onclick = closeModal;
+    cancelCleanBtn.onclick = closeModal;
+
+    function populateCleanModal() {
+        cleanModalTbody.innerHTML = '';
+        if (!currentInsights) return;
+
+        const missing = currentInsights.missing_values;
+        const dtypes = currentInsights.dtypes;
+        let hasMissing = false;
+
+        for (const col of currentInsights.col_names) {
+            const missingCount = missing[col] || 0;
+            if (missingCount > 0) {
+                hasMissing = true;
+                const dt = (dtypes[col] || '').toLowerCase();
+                const isNumeric = dt.includes('int') || dt.includes('float');
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="padding: 0.8rem; border-bottom: 1px solid #2a2c31; font-weight: 600;">${col}</td>
+                    <td style="padding: 0.8rem; border-bottom: 1px solid #2a2c31; color: var(--accent-color); font-weight: 600;">${missingCount}</td>
+                    <td style="padding: 0.8rem; border-bottom: 1px solid #2a2c31;">
+                        <select class="btn-soft clean-strategy-select" data-col="${col}" style="padding: 0.5rem; width: 100%;">
+                            <option value="none" selected>No Action</option>
+                            ${isNumeric ? `
+                                <option value="mean">Fill with Mean</option>
+                                <option value="median">Fill with Median</option>
+                            ` : `
+                                <option value="mode">Fill with Mode</option>
+                                <option value="unknown">Fill with "Unknown"</option>
+                            `}
+                            <option value="drop_rows">Drop Rows</option>
+                            <option value="drop_column">Drop Column</option>
+                        </select>
+                    </td>
+                `;
+                cleanModalTbody.appendChild(tr);
+            }
+        }
+
+        if (!hasMissing) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td colspan="3" style="padding: 2rem; text-align: center; color: var(--primary-color);">
+                    <i class="fa-solid fa-circle-check" style="font-size: 2rem; margin-bottom: 1rem;"></i><br>
+                    Your dataset is clean! No missing values detected.
+                </td>
+            `;
+            cleanModalTbody.appendChild(tr);
+            applyCleanBtn.style.display = 'none';
+        } else {
+            applyCleanBtn.style.display = 'inline-block';
+        }
+    }
+
+    applyCleanBtn.onclick = async () => {
+        const selects = document.querySelectorAll('.clean-strategy-select');
+        const instructions = {};
+        selects.forEach(sel => {
+            if (sel.value !== 'none') {
+                instructions[sel.dataset.col] = sel.value;
+            }
+        });
+
+        if (Object.keys(instructions).length === 0) {
+            closeModal();
+            return;
+        }
+
+        applyCleanBtn.disabled = true;
+        applyCleanBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Cleaning...';
+
+        try {
+            const res = await fetch('/clean-data', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    filename: currentFilename,
+                    instructions: instructions
+                })
+            });
+
+            const data = await res.json();
+            if (data.success) {
+                currentChartData = data.chart_data;
+                renderResults(data);
+                closeModal();
+            } else {
+                alert('Cleaning failed: ' + data.error);
+            }
+        } catch (err) {
+            alert('Error applying cleaning');
+        } finally {
+            applyCleanBtn.disabled = false;
+            applyCleanBtn.innerHTML = 'Apply Cleaning';
+        }
+    };
 });
