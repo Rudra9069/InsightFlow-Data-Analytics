@@ -52,8 +52,10 @@
         </div>
 
         <section id="results" class="card animate-in" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2rem;">
-                <h2 style="margin: 0; min-width: 0; overflow-wrap: break-word; word-break: break-all;">Auto Insights for <span id="current-filename" style="color: var(--primary-color);"></span></h2>
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2rem;">
+                <h2 style="margin: 0; min-width: 0; overflow-wrap: break-word; word-break: break-all;">Auto Insights for
+                    <span id="current-filename" style="color: var(--primary-color);"></span></h2>
                 <div style="display: flex; gap: 1rem; width: auto; flex-shrink: 0;">
                     <button class="btn-soft" id="export-pdf-btn"><i class="fa-solid fa-file-pdf"></i> Export
                         Report</button>
@@ -113,9 +115,11 @@
 
             <!-- Data Overview Section -->
             <div id="data-overview" class="animate-in" style="margin-top: 2.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
                     <div>
-                        <h2 style="margin-bottom: 0.5rem; color: var(--primary-color);"><i class="fa-solid fa-table-cells-large"></i> Data Overview</h2>
+                        <h2 style="margin-bottom: 0.5rem; color: var(--primary-color);"><i
+                                class="fa-solid fa-table-cells-large"></i> Data Overview</h2>
                         <p style="color: #888; margin: 0;">Comprehensive column-by-column breakdown of your dataset.</p>
                     </div>
                     <button class="btn-soft btn-primary" id="open-clean-modal-btn" style="display: none;">
@@ -145,15 +149,28 @@
 
                 <!-- Column Details Table -->
                 <div class="card-inset" style="overflow-x: auto;">
-                    <table id="overview-table" style="width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.9rem;">
+                    <table id="overview-table"
+                        style="width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.9rem;">
                         <thead>
                             <tr style="text-align: left;">
-                                <th style="padding: 1rem; color: var(--primary-color); border-bottom: 1px solid #333; white-space: nowrap;">#</th>
-                                <th style="padding: 1rem; color: var(--primary-color); border-bottom: 1px solid #333; white-space: nowrap;">Column Name</th>
-                                <th style="padding: 1rem; color: var(--primary-color); border-bottom: 1px solid #333; white-space: nowrap;">Data Type</th>
-                                <th style="padding: 1rem; color: var(--primary-color); border-bottom: 1px solid #333; white-space: nowrap;">Missing</th>
-                                <th style="padding: 1rem; color: var(--primary-color); border-bottom: 1px solid #333; min-width: 150px;">Completeness</th>
-                                <th style="padding: 1rem; color: var(--primary-color); border-bottom: 1px solid #333; white-space: nowrap;">Key Stats</th>
+                                <th
+                                    style="padding: 1rem; color: var(--primary-color); border-bottom: 1px solid #333; white-space: nowrap;">
+                                    #</th>
+                                <th
+                                    style="padding: 1rem; color: var(--primary-color); border-bottom: 1px solid #333; white-space: nowrap;">
+                                    Column Name</th>
+                                <th
+                                    style="padding: 1rem; color: var(--primary-color); border-bottom: 1px solid #333; white-space: nowrap;">
+                                    Data Type</th>
+                                <th
+                                    style="padding: 1rem; color: var(--primary-color); border-bottom: 1px solid #333; white-space: nowrap;">
+                                    Missing</th>
+                                <th
+                                    style="padding: 1rem; color: var(--primary-color); border-bottom: 1px solid #333; min-width: 150px;">
+                                    Completeness</th>
+                                <th
+                                    style="padding: 1rem; color: var(--primary-color); border-bottom: 1px solid #333; white-space: nowrap;">
+                                    Key Stats</th>
                             </tr>
                         </thead>
                         <tbody id="overview-table-body">
@@ -174,17 +191,25 @@
         <div class="modal-content card-inset animate-in">
             <div class="modal-header">
                 <h2><i class="fa-solid fa-broom"></i> Auto Data Clean</h2>
-                <button id="close-modal-btn" class="btn-soft" style="padding: 0.5rem; border-radius: 50%;"><i class="fa-solid fa-xmark"></i></button>
+                <button id="close-modal-btn" class="btn-soft" style="padding: 0.5rem; border-radius: 50%;"><i
+                        class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
-                <p style="color: #888; margin-bottom: 1.5rem;">The following columns contain missing values. Select a strategy to resolve them.</p>
+                <p style="color: #888; margin-bottom: 1.5rem;">The following columns contain missing values. Select a
+                    strategy to resolve them.</p>
                 <div style="overflow-x: auto; max-height: 400px;">
                     <table style="width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.9rem;">
                         <thead>
                             <tr style="text-align: left;">
-                                <th style="padding: 0.8rem; color: var(--primary-color); border-bottom: 1px solid #333;">Column Name</th>
-                                <th style="padding: 0.8rem; color: var(--primary-color); border-bottom: 1px solid #333;">Missing</th>
-                                <th style="padding: 0.8rem; color: var(--primary-color); border-bottom: 1px solid #333;">Strategy</th>
+                                <th
+                                    style="padding: 0.8rem; color: var(--primary-color); border-bottom: 1px solid #333;">
+                                    Column Name</th>
+                                <th
+                                    style="padding: 0.8rem; color: var(--primary-color); border-bottom: 1px solid #333;">
+                                    Missing</th>
+                                <th
+                                    style="padding: 0.8rem; color: var(--primary-color); border-bottom: 1px solid #333;">
+                                    Strategy</th>
                             </tr>
                         </thead>
                         <tbody id="clean-modal-tbody">
@@ -193,7 +218,8 @@
                     </table>
                 </div>
             </div>
-            <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #2a2c31;">
+            <div class="modal-footer"
+                style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #2a2c31;">
                 <button id="cancel-clean-btn" class="btn-soft">Cancel</button>
                 <button id="apply-clean-btn" class="btn-soft btn-primary">Apply Cleaning</button>
             </div>

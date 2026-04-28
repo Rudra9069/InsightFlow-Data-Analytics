@@ -373,7 +373,7 @@ footer {
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
     .container {
         padding: 1rem;
         overflow-x: hidden;
@@ -419,7 +419,7 @@ footer {
         font-size: 1.3rem;
     }
 
-    .card > p {
+    .card>p {
         font-size: 0.9rem;
     }
 
@@ -512,7 +512,7 @@ footer {
         padding: 0.5rem 0.6rem !important;
         font-size: 0.8rem !important;
     }
-    
+
     #overview-table {
         font-size: 0.8rem !important;
     }
