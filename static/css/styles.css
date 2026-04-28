@@ -373,7 +373,7 @@ footer {
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 768px) {
     .container {
         padding: 1rem;
         overflow-x: hidden;
