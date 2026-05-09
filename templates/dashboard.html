@@ -43,6 +43,16 @@
                             Analysis File
                         </button>
                     </div>
+                    <!-- Progress Bar Container -->
+                    <div id="progress-container" style="display: none; margin-top: 1.5rem; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.85rem; color: #aaa;">
+                            <span>Analyzing...</span>
+                            <span id="progress-text">0%</span>
+                        </div>
+                        <div style="width: 100%; background-color: #2a2c31; border-radius: 10px; height: 8px; overflow: hidden;">
+                            <div id="progress-bar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-color), #40e617); border-radius: 10px; transition: width 0.3s ease;"></div>
+                        </div>
+                    </div>
                 </form>
             </div>
         </section>

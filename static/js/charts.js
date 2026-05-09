@@ -54,9 +54,33 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const formData = new FormData(uploadForm);
         
-        loadingDiv.style.display = 'block';
+        loadingDiv.style.display = 'none'; 
         resultsSection.style.display = 'none';
         analyzeBtn.disabled = true;
+
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        
+        let progressInterval;
+        const startTime = Date.now();
+        const MIN_DURATION = 5000; // Force at least 5 seconds
+
+        if (progressContainer) {
+            progressContainer.style.display = 'block';
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
+            
+            let progress = 0;
+            progressInterval = setInterval(() => {
+                if (progress < 90) {
+                    progress += Math.floor(Math.random() * 4) + 2; // Add 2-5% per tick
+                    if (progress > 90) progress = 90;
+                    progressBar.style.width = `${progress}%`;
+                    progressText.textContent = `${progress}%`;
+                }
+            }, 200);
+        }
 
         try {
             const response = await fetch('/upload', {
@@ -66,15 +90,41 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await response.json();
 
             if (data.success) {
-                currentChartData = data.chart_data;
-                renderResults(data);
+                const timeElapsed = Date.now() - startTime;
+                const timeRemaining = Math.max(0, MIN_DURATION - timeElapsed);
+
+                setTimeout(() => {
+                    if (progressContainer) {
+                        clearInterval(progressInterval);
+                        progressBar.style.width = '100%';
+                        progressText.textContent = '100%';
+                        
+                        setTimeout(() => {
+                            progressContainer.style.display = 'none';
+                            currentChartData = data.chart_data;
+                            renderResults(data);
+                            analyzeBtn.disabled = false;
+                        }, 500);
+                    } else {
+                        currentChartData = data.chart_data;
+                        renderResults(data);
+                        analyzeBtn.disabled = false;
+                    }
+                }, timeRemaining);
             } else {
                 alert('Error: ' + data.error);
+                if (progressContainer) {
+                    clearInterval(progressInterval);
+                    progressContainer.style.display = 'none';
+                }
+                analyzeBtn.disabled = false;
             }
         } catch (err) {
             alert('Upload failed: ' + err.message);
-        } finally {
-            loadingDiv.style.display = 'none';
+            if (progressContainer) {
+                clearInterval(progressInterval);
+                progressContainer.style.display = 'none';
+            }
             analyzeBtn.disabled = false;
         }
     };
@@ -175,8 +225,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        filename: data.filename,
-                        insights: data.insights
+                        filename: currentFilename,
+                        insights: currentInsights,
+                        chart_data: currentChartData
                     })
                 });
                 const blob = await response.blob();

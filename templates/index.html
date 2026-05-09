@@ -47,12 +47,13 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.8s cubic-bezier(0.85, 0, 0.15, 1), transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+            will-change: opacity, transform;
         }
 
         #splash-screen.splash-hidden {
             opacity: 0;
-            transform: scale(1.05);
+            transform: scale(1.08) translateZ(0);
             pointer-events: none;
         }
 
@@ -82,9 +83,10 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: splash-icon-enter 1s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            animation: splash-icon-enter 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             opacity: 0;
-            transform: scale(0.5) rotateZ(-10deg);
+            transform: scale(0.5) rotateZ(-15deg) translateZ(0);
+            will-change: transform, opacity;
         }
 
         .splash-icon svg {
@@ -96,7 +98,7 @@
         @keyframes splash-icon-enter {
             to {
                 opacity: 1;
-                transform: scale(1) rotateZ(0deg);
+                transform: scale(1) rotateZ(0deg) translateZ(0);
             }
         }
 
@@ -110,10 +112,11 @@
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: gradient-move 3s linear infinite;
+            animation: gradient-move 4s linear infinite;
             min-height: 4.5rem;
             display: flex;
             align-items: center;
+            will-change: background-position;
         }
 
         /* Tagline */
@@ -123,15 +126,16 @@
             color: #666;
             letter-spacing: 3px;
             text-transform: uppercase;
-            animation: splash-tag-enter 0.8s 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            animation: splash-tag-enter 1s 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(20px) translateZ(0);
+            will-change: transform, opacity;
         }
 
         @keyframes splash-tag-enter {
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) translateZ(0);
             }
         }
 
@@ -142,13 +146,20 @@
         }
 
         .main-content-visible {
-            animation: main-reveal 1s 0.3s ease forwards;
+            animation: main-reveal 1.2s 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
             opacity: 0;
+            will-change: opacity, transform;
         }
 
         @keyframes main-reveal {
-            to {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) translateZ(0);
+            }
+
+            100% {
                 opacity: 1;
+                transform: translateY(0) translateZ(0);
             }
         }
 
@@ -209,7 +220,6 @@
                 </svg>
             </div>
             <div class="splash-brand" id="splash-brand-text"></div>
-            <div class="splash-tagline">Data Intelligence Platform</div>
         </div>
 
     </div>
@@ -352,14 +362,20 @@
             const brandEl = document.getElementById('splash-brand-text');
             setTimeout(() => {
                 let charIndex = 0;
-                const typingObj = setInterval(() => {
-                    if (charIndex < brandText.length) {
-                        brandEl.innerHTML += brandText.charAt(charIndex);
+                let lastTime = performance.now();
+                const speed = 80; // ms per char
+
+                function type(time) {
+                    if (time - lastTime > speed) {
+                        brandEl.textContent = brandText.substring(0, charIndex + 1);
                         charIndex++;
-                    } else {
-                        clearInterval(typingObj);
+                        lastTime = time;
                     }
-                }, 40); // Speed of character typing
+                    if (charIndex < brandText.length) {
+                        requestAnimationFrame(type);
+                    }
+                }
+                requestAnimationFrame(type);
             }, 300);
 
             // Splash exit
@@ -372,7 +388,7 @@
                 setTimeout(function () {
                     splash.style.display = 'none';
                     cancelAnimationFrame(animFrame);
-                }, 900);
+                }, 1000);
             }, 2500);
         })();
     </script>
